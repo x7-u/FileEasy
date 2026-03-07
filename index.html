@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FileEasy — Video Compressor</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+
+    <!-- ── Header ─────────────────────────────────────────────────────── -->
+    <header class="header">
+      <div class="header-left">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="2" y="3" width="20" height="14" rx="2"/>
+          <path d="M8 21h8M12 17v4"/>
+          <path d="M10 9l5 3-5 3V9z"/>
+        </svg>
+        <div>
+          <h1>FileEasy</h1>
+          <p class="subtitle">Drop videos. Get smaller videos.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── Quality Settings ───────────────────────────────────────────── -->
+    <section class="settings-bar">
+      <span class="settings-label">Quality</span>
+      <div class="quality-group" role="group" aria-label="Compression quality">
+        <button class="quality-btn" data-crf="22" data-preset="slow" data-cq="20" data-nvenc-preset="p5">
+          <span class="q-name">High</span>
+          <span class="q-hint">~50% smaller</span>
+        </button>
+        <button class="quality-btn active" data-crf="28" data-preset="medium" data-cq="26" data-nvenc-preset="p4">
+          <span class="q-name">Balanced</span>
+          <span class="q-hint">~70% smaller</span>
+        </button>
+        <button class="quality-btn" data-crf="35" data-preset="veryfast" data-cq="34" data-nvenc-preset="p2">
+          <span class="q-name">Max</span>
+          <span class="q-hint">~85% smaller</span>
+        </button>
+      </div>
+
+      <div class="divider-v"></div>
+
+      <!-- ── GPU toggle ──────────────────────────────────────────────── -->
+      <div class="gpu-wrap">
+        <span class="settings-label">GPU</span>
+        <button
+          class="toggle-switch"
+          id="gpuSwitch"
+          role="switch"
+          aria-checked="false"
+          aria-label="Use NVIDIA GPU encoding"
+          disabled
+          title="NVIDIA NVENC — faster encoding using your GPU"
+        >
+          <span class="toggle-thumb"></span>
+        </button>
+        <span class="gpu-chip detecting" id="gpuChip">Detecting…</span>
+      </div>
+
+      <div class="divider-v"></div>
+
+      <div class="action-buttons">
+        <button class="btn-compress" id="compressBtn" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2v10M12 12l-4-4m4 4 4-4"/>
+            <rect x="4" y="14" width="16" height="6" rx="1"/>
+          </svg>
+          Compress All
+        </button>
+        <button class="btn-clear" id="clearBtn" disabled>Clear</button>
+      </div>
+    </section>
+
+    <!-- ── Drop Zone ──────────────────────────────────────────────────── -->
+    <div class="drop-zone" id="dropZone">
+      <div class="drop-content">
+        <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        <p class="drop-title">Drop video files here</p>
+        <p class="drop-hint">or</p>
+        <button class="btn-browse" id="browseBtn">Browse files</button>
+        <p class="drop-formats">MP4 · AVI · MOV · MKV · WMV · FLV · WEBM · M4V · and more</p>
+      </div>
+      <input type="file" id="fileInput" accept="video/*,.mkv,.avi,.wmv,.flv,.webm,.m4v,.3gp,.ts,.mts,.vob" multiple hidden />
+    </div>
+
+    <!-- ── File List ──────────────────────────────────────────────────── -->
+    <ul class="file-list" id="fileList" aria-label="Video files to compress"></ul>
+
+    <!-- ── Summary bar (shown after any compression) ──────────────────── -->
+    <div class="summary-bar" id="summaryBar" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      <span id="summaryText"></span>
+    </div>
+
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

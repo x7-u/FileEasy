@@ -1,0 +1,51 @@
+{
+  "name": "fileeasy",
+  "productName": "FileEasy",
+  "description": "Drag-and-drop video compressor powered by FFmpeg",
+  "version": "1.0.0",
+  "author": "FileEasy",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win --x64"
+  },
+  "build": {
+    "appId": "com.fileeasy.app",
+    "productName": "FileEasy",
+    "copyright": "Copyright © 2025 FileEasy",
+    "artifactName": "FileEasy-Setup-${version}.exe",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!*.bat",
+      "!dist/**",
+      "!.claude/**"
+    ],
+    "asarUnpack": [
+      "node_modules/ffmpeg-static/**"
+    ],
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] }
+      ],
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "FileEasy",
+      "deleteAppDataOnUninstall": false
+    }
+  },
+  "dependencies": {
+    "ffmpeg-static": "^5.2.0"
+  },
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3"
+  }
+}
