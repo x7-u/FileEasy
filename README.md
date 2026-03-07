@@ -14,6 +14,10 @@ A simple drag-and-drop video compressor for Windows. Drop your videos in, get sm
 
 Grab the latest `FileEasy-Setup.exe` from the [Releases](../../releases) page and run it — no extra software needed.
 
+> **Windows SmartScreen warning?**
+> You may see "Windows protected your PC" when running the installer. This appears because the app isn't commercially code-signed yet.
+> Click **More info → Run anyway** to proceed — the app is safe to install.
+
 ## For Developers
 
 ### Prerequisites
