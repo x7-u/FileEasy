@@ -21,7 +21,7 @@
       "**/*",
       "!*.bat",
       "!dist/**",
-      "!.claude/**"
+      "!.*/**"
     ],
     "asarUnpack": [
       "node_modules/ffmpeg-static/**"
