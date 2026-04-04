@@ -14,6 +14,7 @@ let selectedCq          = 26;
 let selectedNvencPreset = 'p4';
 let useGpu     = false;
 let nvencAvailable = false;
+let copyMetadata = false;
 
 /* ── DOM refs ──────────────────────────────────────────────────────────── */
 const dropZone    = document.getElementById('dropZone');
@@ -27,6 +28,7 @@ const summaryText = document.getElementById('summaryText');
 const qualityBtns = document.querySelectorAll('.quality-btn');
 const gpuSwitch   = document.getElementById('gpuSwitch');
 const gpuChip     = document.getElementById('gpuChip');
+const metaSwitch  = document.getElementById('metaSwitch');
 
 /* ── Helpers ───────────────────────────────────────────────────────────── */
 function uid() {
@@ -70,6 +72,14 @@ gpuSwitch.addEventListener('click', () => {
   gpuSwitch.classList.toggle('on', useGpu);
   gpuChip.textContent   = useGpu ? 'NVENC' : 'Available';
   gpuChip.className     = 'gpu-chip ' + (useGpu ? 'active' : 'ready');
+});
+
+/* ── Metadata toggle ──────────────────────────────────────────────────── */
+metaSwitch.addEventListener('click', () => {
+  if (isRunning) return;
+  copyMetadata = !copyMetadata;
+  metaSwitch.setAttribute('aria-checked', String(copyMetadata));
+  metaSwitch.classList.toggle('on', copyMetadata);
 });
 
 /* ── NVENC auto-detect on startup ──────────────────────────────────────── */
@@ -302,6 +312,7 @@ async function startCompression() {
   summaryBar.hidden = true;
   qualityBtns.forEach((b) => b.disabled = true);
   gpuSwitch.disabled = true;
+  metaSwitch.disabled = true;
   updateButtons();
 
   let doneCount = 0;
@@ -321,6 +332,7 @@ async function startCompression() {
         useGpu,
         cq: selectedCq,
         nvencPreset: selectedNvencPreset,
+        copyMetadata,
       });
 
       entry.status = 'done';
@@ -343,6 +355,7 @@ async function startCompression() {
   isRunning = false;
   qualityBtns.forEach((b) => b.disabled = false);
   gpuSwitch.disabled = !nvencAvailable;
+  metaSwitch.disabled = false;
   updateButtons();
 
   if (doneCount > 0) {

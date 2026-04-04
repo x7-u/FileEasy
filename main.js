@@ -113,7 +113,7 @@ ipcMain.handle('detect-nvenc', async () => {
 });
 
 // ─── Compress a single video ───────────────────────────────────────────────
-ipcMain.handle('compress-video', async (event, { id, filePath, crf, preset, useGpu, cq, nvencPreset }) => {
+ipcMain.handle('compress-video', async (event, { id, filePath, crf, preset, useGpu, cq, nvencPreset, copyMetadata }) => {
   const ext      = path.extname(filePath);
   const dir      = path.dirname(filePath);
   const basename = path.basename(filePath, ext);
@@ -121,9 +121,14 @@ ipcMain.handle('compress-video', async (event, { id, filePath, crf, preset, useG
 
   function runCompress(withGpu) {
     return new Promise((resolve, reject) => {
+      const metaFlags = copyMetadata
+        ? ['-map_metadata', '0']
+        : ['-map_metadata', '-1'];
+
       const args = withGpu
         ? [
             '-i', filePath,
+            ...metaFlags,
             '-c:v', 'h264_nvenc',
             '-preset', nvencPreset,
             '-rc', 'vbr',
@@ -139,6 +144,7 @@ ipcMain.handle('compress-video', async (event, { id, filePath, crf, preset, useG
           ]
         : [
             '-i', filePath,
+            ...metaFlags,
             '-c:v', 'libx264',
             '-crf', String(crf),
             '-preset', preset,
